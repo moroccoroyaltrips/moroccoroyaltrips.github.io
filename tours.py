@@ -541,7 +541,7 @@ def map_svg_days(ex):
     st=ex['stops2']; DI=ex['days_idx']
     xs=[p[1] for p in st]; ys=[p[2] for p in st]
     pad=70; W,H=820,540
-    s=min((W-2*pad)/(max(xs)-min(xs)),(H-2*pad)/(max(ys)-min(ys)))
+    s=min((W-2*pad)/max(max(xs)-min(xs),1),(H-2*pad)/max(max(ys)-min(ys),1))
     tx=(W-(max(xs)-min(xs))*s)/2-min(xs)*s; ty=(H-(max(ys)-min(ys))*s)/2-min(ys)*s
     P=lambda x,y:(round(x*s+tx,1),round(y*s+ty,1))
     def seg(idx,bend):

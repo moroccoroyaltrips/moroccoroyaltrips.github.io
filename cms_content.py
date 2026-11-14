@@ -95,9 +95,14 @@ def load_tours(TR, A):
     P = places(TR)
     added = []
     for d in _read('tours'):
-        days = d.get('itinerary') or []
-        if not d.get('title') or not _l(d.get('title'), 'en') or not days:
-            print('cms: tour skipped (needs a title and at least one day):', d['_file']); continue
+        if not d.get('title') or not _l(d.get('title'), 'en'):
+            print('cms: tour skipped (needs an English title):', d['_file']); continue
+        days = [x for x in (d.get('itinerary') or []) if isinstance(x, dict)]
+        if not days:   # no day added yet: one day, so the page still exists
+            home = {'marrakech': 'Marrakech', 'fes': 'Fes', 'tangier': 'Tangier', 'casablanca': 'Casablanca', 'errachidia': 'Errachidia',
+                    'ouarzazate': 'Ouarzazate', 'agadir': 'Agadir'}.get(d.get('city'), 'Marrakech')
+            days = [{'title': d.get('title'), 'text': d.get('summary') or {}, 'places': [home]}]
+        d['itinerary'] = days
         tid = 'tour-' + _slug(d.get('slug') or d['_file']).replace('tour-', '', 1)
         if any(t['id'] == tid for t in TR.TOURS):
             print('cms: tour id already used:', tid); continue

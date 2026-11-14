@@ -1,0 +1,239 @@
+# Dashboard for the website (Pages CMS: https://app.pagescms.org)
+# Tours and blog articles added here are built into the website automatically.
+
+media:
+  input: images/uploads
+  output: /images/uploads
+  categories: [image]
+
+content:
+  - name: tours
+    label: Tours
+    type: collection
+    path: content/tours
+    format: json
+    exclude: [README.md]
+    filename: "{fields.slug}.json"
+    view:
+      primary: slug
+    fields:
+      - name: slug
+        label: Page address
+        description: "Short, lowercase, words joined with dashes. Example: 5day-marrakech-desert (the page becomes www.moroccoroyaltrips.com/tour-5day-marrakech-desert.html). Do not change it after publishing."
+        type: string
+        required: true
+        pattern: "^[a-z0-9-]+$"
+      - name: published
+        label: Show on the website
+        description: Switch off to hide the tour without deleting it.
+        type: boolean
+        default: true
+      - name: city
+        label: Departure city
+        description: The tour is listed with the tours of this city on the home page.
+        type: select
+        required: true
+        options:
+          values:
+            - {name: marrakech, label: "Marrakech"}
+            - {name: fes, label: "Fes"}
+            - {name: tangier, label: "Tangier"}
+            - {name: casablanca, label: "Casablanca"}
+            - {name: errachidia, label: "Errachidia"}
+            - {name: ouarzazate, label: "Ouarzazate"}
+            - {name: agadir, label: "Agadir"}
+            - {name: daytrip, label: "Day trip"}
+            - {name: special, label: "Special tour"}
+      - name: title
+        label: Tour title
+        description: Only English is required. An empty language shows the English text.
+        type: object
+        fields: &line
+          - {name: en, label: English, type: string}
+          - {name: es, label: Español, type: string}
+          - {name: fr, label: Français, type: string}
+          - {name: it, label: Italiano, type: string}
+          - {name: zh, label: 中文, type: string}
+      - name: summary
+        label: Short description (shown under the title)
+        type: object
+        fields: &text
+          - {name: en, label: English, type: text}
+          - {name: es, label: Español, type: text}
+          - {name: fr, label: Français, type: text}
+          - {name: it, label: Italiano, type: text}
+          - {name: zh, label: 中文, type: text}
+      - name: hero
+        label: Main photo (top of the page and on the home page card)
+        description: A wide, landscape photo works best.
+        type: image
+      - name: overview
+        label: Overview
+        description: Leave an empty line between paragraphs.
+        type: object
+        fields: *text
+      - name: itinerary
+        label: Day by day
+        description: Add one item per day.
+        type: object
+        list:
+          collapsible: true
+        fields:
+          - name: title
+            label: "Day title (example: Day 1 · Marrakech to the Dades Valley)"
+            type: object
+            fields: *line
+          - name: text
+            label: What happens this day
+            type: object
+            fields: *text
+          - name: sleep
+            label: "Night (example: Hotel or riad in Dades)"
+            type: object
+            fields: *line
+          - name: meals
+            label: "Meals (example: Breakfast, dinner)"
+            type: object
+            fields: *line
+          - name: places
+            label: Places on the map for this day (in order)
+            description: Choose the places the day passes through, from start to finish. They draw the route on the map.
+            type: select
+            options:
+              multiple: true
+              values:
+                - "Agadir"
+                - "Agafay"
+                - "Agdz"
+                - "Ait Ben Haddou"
+                - "Alnif"
+                - "Asilah"
+                - "Azrou"
+                - "Beni Mellal"
+                - "Cape Spartel"
+                - "Casablanca"
+                - "Chefchaouen"
+                - "Dades Valley"
+                - "Erfoud"
+                - "Erg Chigaga"
+                - "Errachidia"
+                - "Essaouira"
+                - "Fes"
+                - "Foum Zguid"
+                - "Ifrane"
+                - "Jorf"
+                - "Kelaat M'Gouna"
+                - "M'hamid"
+                - "Marrakech"
+                - "Meknes"
+                - "Merzouga"
+                - "Midelt"
+                - "Moulay Yacoub"
+                - "N'Kob"
+                - "Ouarzazate"
+                - "Ouzoud"
+                - "Rabat"
+                - "Rissani"
+                - "Rose Valley"
+                - "Setti Fatma"
+                - "Skoura"
+                - "Tafraoute Sidi Ali"
+                - "Taghazout"
+                - "Tagounite"
+                - "Taliouine"
+                - "Tamegroute"
+                - "Tangier"
+                - "Taroudant"
+                - "Taznakht"
+                - "Tetouan"
+                - "Tinghir"
+                - "Tizi n'Tichka"
+                - "Tnine Ourika"
+                - "Todra Gorge"
+                - "Volubilis"
+                - "Zagora"
+      - name: highlights
+        label: Highlights
+        description: One per line. Leave empty to list the places of the route.
+        type: object
+        fields: *text
+      - name: included
+        label: Included
+        description: One item per line.
+        type: object
+        fields: *text
+      - name: not_included
+        label: Not included
+        description: One item per line.
+        type: object
+        fields: *text
+      - name: gallery
+        label: Photo gallery
+        type: object
+        list:
+          collapsible: true
+        fields:
+          - {name: image, label: Photo, type: image}
+          - name: caption
+            label: Caption
+            type: object
+            fields: *line
+      - name: route
+        label: Route line (optional)
+        description: "Example: Marrakech · Dades · Merzouga · Marrakech. Leave empty to build it from the places of the days."
+        type: object
+        fields: *line
+
+  - name: blog
+    label: Blog
+    type: collection
+    path: content/blog
+    format: json
+    exclude: [README.md]
+    filename: "{fields.slug}.json"
+    view:
+      primary: slug
+    fields:
+      - name: slug
+        label: Page address
+        description: "Short, lowercase, words joined with dashes. Example: best-riads-in-fes (the page becomes www.moroccoroyaltrips.com/blog-best-riads-in-fes.html)."
+        type: string
+        required: true
+        pattern: "^[a-z0-9-]+$"
+      - name: published
+        label: Show on the website
+        type: boolean
+        default: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: tag
+        label: Category
+        type: select
+        required: true
+        options:
+          values:
+            - {name: planning, label: "Planning"}
+            - {name: desert, label: "Sahara"}
+            - {name: cities, label: "Cities"}
+            - {name: culture, label: "Culture"}
+            - {name: coast, label: "Coast"}
+            - {name: family, label: "Family"}
+            - {name: tips, label: "Travel tips"}
+      - name: image
+        label: Main photo
+        type: image
+      - name: title
+        label: Title
+        type: object
+        fields: *line
+      - name: excerpt
+        label: Short introduction (shown on the blog list)
+        type: object
+        fields: *text
+      - name: body
+        label: Article text
+        description: "Empty line between paragraphs. A line starting with ## is a heading. A line starting with - is a list item. A line starting with > is a 'Good to know' box. **bold** and [link text](https://...) also work. Keep the same headings in every language."
+        type: object
+        fields: *text

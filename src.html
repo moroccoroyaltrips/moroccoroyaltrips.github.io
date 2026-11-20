@@ -688,6 +688,10 @@ html[lang="zh"] body{font-family:var(--body)}
 html[lang="zh"] h1,html[lang="zh"] h2,html[lang="zh"] h3,html[lang="zh"] .hx-tb b,html[lang="zh"] .bl-b b,html[lang="zh"] .acc-t,html[lang="zh"] .pj-i h3,html[lang="zh"] .wy-head h2{font-weight:700;letter-spacing:.02em}
 html[lang="zh"] .wy-script{font-family:"Noto Sans SC",sans-serif;font-size:clamp(26px,2.6vw,34px);letter-spacing:.2em}
 html[lang="zh"] p,html[lang="zh"] li{line-height:1.9}
+.brand .wm{display:none}
+.brand img{width:auto!important;height:108px!important;max-width:none;margin-block:-16px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.45))}
+header.scrolled .brand img{height:64px!important;margin-block:-2px}
+@media (max-width:1100px){.brand img{height:84px!important;margin-block:-10px}header.scrolled .brand img{height:58px!important}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -713,7 +717,7 @@ html[lang="zh"] p,html[lang="zh"] li{line-height:1.9}
 <header id="hdr">
   <nav class="nav in" aria-label="Main">
     <a class="brand" href="#top" aria-label="MoroccoRoyalTrips home">
-      <img src="{{EMBLEM}}" alt="" width="54" height="54">
+      <img src="images/logo-header.webp" alt="Morocco Royal Trips" width="94" height="90">
       <span class="wm"><strong data-brand="name">MOROCCO ROYAL</strong><small data-brand="tag">Trips</small></span>
     </a>
     <ul class="menu">

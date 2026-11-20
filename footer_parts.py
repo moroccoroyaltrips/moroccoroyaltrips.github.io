@@ -1,7 +1,8 @@
 import json, re
 WA_NUM='+212 659 288 638'; WA_LINK='https://wa.me/212659288638'
 MAIL='moroccoroyaltrips0@gmail.com'
-TRIPADVISOR_URL='#'   # put the real Tripadvisor listing URL here
+TRIPADVISOR_URL=''   # not used
+GOOGLE_REVIEW_URL=''   # paste the Google review link here (Google Business Profile > Ask for reviews); the badge shows only when it is filled
 INSTAGRAM_URL='https://www.instagram.com/morocco_royal_trips/'
 FACEBOOK_URL='https://www.facebook.com/share/1KHcsaf3p6/'      # put the real Instagram URL here (empty = hidden)
 STAR='<path d="M12 2l2.9 5.1L20 4l-3.1 5.1L22 12l-5.1 2.9L20 20l-5.1-3.1L12 22l-2.9-5.1L4 20l3.1-5.1L2 12l5.1-2.9L4 4l5.1 3.1z" fill="currentColor"/>'
@@ -13,6 +14,7 @@ I_CLK=ic('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>')
 I_REV=ic('<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M9 11l1.3 1.3L13.5 9"/>')
 I_IG=ic('<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/>')
 I_FB='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4V10.5H7.9v3h2.6V21z"/></svg>'
+I_G='<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.5z"/></svg>'
 I_OWL='<svg viewBox="0 0 32 20" aria-hidden="true"><path d="M9 3h14l-2 2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8.5" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="23.5" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8.5" cy="12" r="2.3" fill="currentColor"/><circle cx="23.5" cy="12" r="2.3" fill="currentColor"/><path d="M14.5 15l1.5 2.5 1.5-2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>'
 I_UP=ic('<path d="M12 19V5M5 12l7-7 7 7"/>')
 
@@ -22,6 +24,7 @@ MAIL_JS='<script>(function(){\nvar M={en:\'Email copied\',es:\'Email copiado\',f
 def html():
     ig=f'<a class="r-ig" href="{INSTAGRAM_URL}" target="_blank" rel="noopener" aria-label="Instagram">{I_IG}</a>' if INSTAGRAM_URL else ''
     fb=f'<a class="r-fb" href="{FACEBOOK_URL}" target="_blank" rel="noopener" aria-label="Facebook">{I_FB}</a>' if FACEBOOK_URL else ''
+    gr=(f'<a class="ft-gr" href="{GOOGLE_REVIEW_URL}" target="_blank" rel="noopener"><span class="g">{I_G}</span><span class="t"><small data-i="ft_gr1">Review us on</small><b>Google</b></span><span class="st" aria-hidden="true">★★★★★</span></a>') if GOOGLE_REVIEW_URL else ''
     tours=''.join(f'<li><a href="index.html#tours-{c}" data-i="{k}">x</a></li>' for c,k in CITIES)
     return f'''<footer class="ft">
   <div class="ft-band">
@@ -32,15 +35,14 @@ def html():
   </div>
   <div class="in ft-grid">
     <div class="ft-brand">
-      <a class="ft-logo" href="index.html"><img src="{{{{EMBLEM}}}}" alt="MoroccoRoyalTrips logo"><span><b>MOROCCO ROYAL</b><small>TRIPS</small></span></a>
+      <a class="ft-logo" href="index.html"><img src="images/logo-header.webp" alt="Morocco Royal Trips logo"></a>
       <p data-i="ft_about">Private tours, day trips and desert experiences across Morocco, designed by a local team.</p>
-      <a class="ft-ta2" href="{TRIPADVISOR_URL}" target="_blank" rel="noopener" aria-label="Tripadvisor"><small data-i="ft_ta1">Read our reviews on</small><img src="images/ta-logo.png" alt="Tripadvisor" width="163" height="58" loading="lazy"></a>
+      {gr}
       <div class="ft-rnd">
         <a class="r-wa" href="{WA_LINK}" target="_blank" rel="noopener" aria-label="WhatsApp">{I_WA}</a>
         {ig}
         {fb}
         <a class="r-ml" href="mailto:{MAIL}" aria-label="Email">{I_MAIL}</a>
-        <a class="r-ta" href="{TRIPADVISOR_URL}" target="_blank" rel="noopener" aria-label="Tripadvisor">{I_OWL}</a>
       </div>
     </div>
     <nav class="ft-col" aria-label="Tours"><h4 data-i="ft_h1">Tours</h4><ul>{tours}</ul></nav>
@@ -63,19 +65,19 @@ def html():
 {MAIL_JS}'''
 
 T={
-'en':dict(ft_bh="Ready to plan your journey?",ft_bp="Tell us your dates and we reply personally with a free itinerary.",ft_wa="Chat on WhatsApp",ft_q="Free quote",
+'en':dict(ft_gr1="Review us on",ft_bh="Ready to plan your journey?",ft_bp="Tell us your dates and we reply personally with a free itinerary.",ft_wa="Chat on WhatsApp",ft_q="Free quote",
  ft_about="Private tours, day trips and desert experiences across Morocco, designed by a local team that knows every road.",ft_ta1="Read our reviews on",
  ft_h1="Tours",ft_h2="Experiences",ft_h3="Company",ft_h4="Contact",ft_spe="Special tours",ft_mz="Merzouga activities",ft_ag="Agafay activities",
  ft_loc="Based in",ft_loc2="Morocco · tours nationwide",ft_hr="Replies",ft_hr2="7 days a week",ft_cr="All rights reserved.",ft_faq="FAQ",ft_pr="Privacy Policy",ft_tm="Terms & Conditions"),
-'es':dict(ft_bh="¿Listo para planificar tu viaje?",ft_bp="Cuéntanos tus fechas y te respondemos personalmente con un itinerario gratis.",ft_wa="Escribir por WhatsApp",ft_q="Presupuesto gratis",
+'es':dict(ft_gr1="Valóranos en",ft_bh="¿Listo para planificar tu viaje?",ft_bp="Cuéntanos tus fechas y te respondemos personalmente con un itinerario gratis.",ft_wa="Escribir por WhatsApp",ft_q="Presupuesto gratis",
  ft_about="Circuitos privados, excursiones y experiencias en el desierto por todo Marruecos, diseñados por un equipo local que conoce cada carretera.",ft_ta1="Lee nuestras opiniones en",
  ft_h1="Circuitos",ft_h2="Experiencias",ft_h3="Empresa",ft_h4="Contacto",ft_spe="Circuitos especiales",ft_mz="Actividades en Merzouga",ft_ag="Actividades en Agafay",
  ft_loc="Con base en",ft_loc2="Marruecos · circuitos en todo el país",ft_hr="Respondemos",ft_hr2="7 días a la semana",ft_cr="Todos los derechos reservados.",ft_faq="Preguntas frecuentes",ft_pr="Privacidad",ft_tm="Términos y condiciones"),
-'fr':dict(ft_bh="Prêt à organiser votre voyage ?",ft_bp="Donnez-nous vos dates, nous vous répondons personnellement avec un itinéraire gratuit.",ft_wa="Écrire sur WhatsApp",ft_q="Devis gratuit",
+'fr':dict(ft_gr1="Laissez-nous un avis sur",ft_bh="Prêt à organiser votre voyage ?",ft_bp="Donnez-nous vos dates, nous vous répondons personnellement avec un itinéraire gratuit.",ft_wa="Écrire sur WhatsApp",ft_q="Devis gratuit",
  ft_about="Circuits privés, excursions et expériences dans le désert à travers le Maroc, conçus par une équipe locale qui connaît chaque route.",ft_ta1="Lisez nos avis sur",
  ft_h1="Circuits",ft_h2="Expériences",ft_h3="Agence",ft_h4="Contact",ft_spe="Circuits thématiques",ft_mz="Activités à Merzouga",ft_ag="Activités à Agafay",
  ft_loc="Basés au",ft_loc2="Maroc · circuits dans tout le pays",ft_hr="Réponses",ft_hr2="7 jours sur 7",ft_cr="Tous droits réservés.",ft_faq="FAQ",ft_pr="Confidentialité",ft_tm="Conditions générales"),
-'it':dict(ft_bh="Pronto a organizzare il tuo viaggio?",ft_bp="Raccontaci le tue date e ti rispondiamo di persona con un itinerario gratuito.",ft_wa="Scrivi su WhatsApp",ft_q="Preventivo gratuito",
+'it':dict(ft_gr1="Lasciaci una recensione su",ft_bh="Pronto a organizzare il tuo viaggio?",ft_bp="Raccontaci le tue date e ti rispondiamo di persona con un itinerario gratuito.",ft_wa="Scrivi su WhatsApp",ft_q="Preventivo gratuito",
  ft_about="Tour privati, escursioni ed esperienze nel deserto in tutto il Marocco, progettati da un team locale che conosce ogni strada.",ft_ta1="Leggi le nostre recensioni su",
  ft_h1="Tour",ft_h2="Esperienze",ft_h3="Agenzia",ft_h4="Contatti",ft_spe="Tour speciali",ft_mz="Attività a Merzouga",ft_ag="Attività ad Agafay",
  ft_loc="Con sede in",ft_loc2="Marocco · tour in tutto il paese",ft_hr="Rispondiamo",ft_hr2="7 giorni su 7",ft_cr="Tutti i diritti riservati.",ft_faq="FAQ",ft_pr="Privacy",ft_tm="Termini e condizioni")}
@@ -102,7 +104,7 @@ CSS='''
 .ft-btn:hover{transform:translateY(-2px)}.ft-btn.line:hover{background:rgba(233,205,142,.1)}
 .ft-grid{display:grid;grid-template-columns:1.45fr 1fr 1fr 1.35fr;gap:48px;padding-block:68px 56px}
 .ft-logo{display:inline-flex;align-items:center;gap:14px}
-.ft-logo img{width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,.4))}
+.ft-logo img{width:auto;height:130px;max-width:none;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,.4))}
 .ft-logo b{display:block;font:600 17px/1.1 var(--body,Jost),sans-serif;letter-spacing:.16em;color:#fff}
 .ft-logo small{display:block;margin-top:5px;font-size:11px;letter-spacing:.42em;color:var(--gold-hi)}
 .ft-brand p{margin:20px 0 24px;line-height:1.75;max-width:36ch}
@@ -119,7 +121,11 @@ CSS='''
 .r-ig{background:radial-gradient(circle at 30% 107%,#fdf497 0,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285aeb 90%)}
 .r-fb{background:#1877f2}
 .r-ml{background:#c9a05a;color:#1a1206!important}
-.r-ta{background:#34e0a1;color:#0b0a08!important}.r-ta svg{width:28px;height:28px}
+.ft-gr{display:inline-flex;align-items:center;gap:12px;margin-top:6px;padding:10px 16px 10px 10px;border-radius:14px;background:#fff;color:#1f1f1f;text-decoration:none;box-shadow:0 10px 24px rgba(0,0,0,.25);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.ft-gr:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.ft-gr .g{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#f3f4f6}.ft-gr .g svg{width:24px;height:24px}
+.ft-gr .t{display:grid;line-height:1.15}.ft-gr .t small{font-size:10.5px;letter-spacing:.06em;color:#5f6368}.ft-gr .t b{font:600 18px/1.2 Arial,Helvetica,sans-serif;color:#202124;letter-spacing:0}
+.ft-gr .st{color:#fbbc04;font-size:14px;letter-spacing:2px;margin-left:4px}
 
 .ft-ta{display:inline-flex;align-items:center;gap:12px;padding:10px 18px 10px 12px;border-radius:14px;background:#00af87;color:#fff!important;box-shadow:0 10px 24px rgba(0,175,135,.22);transition:transform .35s var(--ease),box-shadow .35s}
 .ft-ta:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,175,135,.32)}

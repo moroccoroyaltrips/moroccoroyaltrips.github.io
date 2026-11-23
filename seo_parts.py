@@ -1,6 +1,7 @@
 # SEO: meta description, canonical, Open Graph / Twitter tags, JSON-LD, sitemap.xml, robots.txt
 import re, html, json, datetime
 DOMAIN='https://www.moroccoroyaltrips.com'   # <-- change to the real domain when known
+GA_ID='GTM-NPVZ6QDN'   # Google Analytics tag
 SITE='Morocco Royal Trips'
 DEF="Private tours in Morocco with a local team: Sahara desert camps in Merzouga and Erg Chigaga, imperial cities, Atlas mountains and day trips from Marrakech and Fes."
 FIX={'index.html':DEF,
@@ -52,6 +53,8 @@ def run(files,tours,acts,arts):
             tags.append('<script type="application/ld+json">'+json.dumps({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":_clean(a) if len(_clean(a))<160 else re.sub(r'<[^>]+>','',a)}} for q,a in LG.FQ['en']]},ensure_ascii=False)+'</script>')
         blk='\n<!--seo-->'+'\n'.join(tags)+'<!--/seo-->'
         i=s.index('</title>')+len('</title>'); s=s[:i]+blk+s[i:]
+        s=re.sub(r'<!--ga-->.*?<!--/ga-->\n?','',s,flags=re.S)
+        if GA_ID: s='<!--ga--><script async src="https://www.googletagmanager.com/gtm.js?id='+GA_ID+'"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag(\'js\',new Date());</script><!--/ga-->\n'+s
         open(f,'w').write(s)
         pr='1.0' if f=='index.html' else '0.8' if f.startswith(('tour-','daytrip-')) else '0.6'
         urls.append((url,pr))
